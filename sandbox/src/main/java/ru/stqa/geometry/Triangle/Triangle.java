@@ -1,26 +1,25 @@
 package ru.stqa.geometry.Triangle;
 
 public class Triangle {
+    int aSide;
+    int bSide;
+    int cSide;
+
+    public Triangle(int aSide, int bSide, int cSide) {
+        this.aSide = aSide;
+        this.bSide = bSide;
+        this.cSide = cSide;
+    }
+
     public static void main(String[] args) {
-        printTrianglePerimeter(5.0);
-        printTriangleArea(5.0, 5.0, 5.0);
     }
 
-    public static void printTrianglePerimeter(double a) {
-        System.out.println("Периметр треугольника со сторонами " + " "+ a +" " + "равен " + perimeter(a));
+    public int perimeter() {
+        return this.aSide+this.bSide+this.cSide;
     }
 
-    public static double perimeter(double a) {
-        return a * 3;
-    }
-
-    public static void printTriangleArea(double a, double b, double c) {
-        System.out.println("Площадь треугольника со сторонами " + " "+ a +" " + "равен " + area(a, b, c));
-    }
-
-
-    public static double area(double a, double b, double c) {
-        double p = (a*3)/2;
-        return Math.sqrt(p * (p - a) * (p - b) * (p - c));
+    public int area() {
+        int p = (aSide + bSide + cSide) / 2;
+        return (int) Math.sqrt(p * (p - aSide) * (p - bSide) * (p - cSide));
     }
 }
