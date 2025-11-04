@@ -21,6 +21,6 @@ public class TriangleTest {
     void triangleTest() {
         var t1 = new Triangle(3, 4, 5);
         var t2 = new Triangle(5, 4, 3);
-        Assertions.assertEquals(t1, t2);
+        Assertions.assertTrue(t1.equals(t2));
     }
 }
