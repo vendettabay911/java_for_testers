@@ -18,7 +18,23 @@ public class Triangle {
             throw new IllegalArgumentException("One of triangle sides is too big");
         }
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Triangle triangle = (Triangle) o;
+        return Double.compare(triangle.aSide, this.aSide) == 0 && Double.compare(triangle.bSide, this.bSide) == 0 && Double.compare(triangle.cSide, this.cSide) == 0
+                || Double.compare(triangle.aSide, this.bSide) == 0 && Double.compare(triangle.bSide, this.aSide) == 0 && Double.compare(triangle.cSide, this.cSide) == 0
+                || Double.compare(triangle.aSide, this.cSide) == 0 && Double.compare(triangle.bSide, this.bSide) == 0 && Double.compare(triangle.cSide, this.aSide) == 0
+                || Double.compare(triangle.aSide, this.cSide) == 0 && Double.compare(triangle.bSide, this.aSide) == 0 && Double.compare(triangle.cSide, this.bSide) == 0
+                || Double.compare(triangle.aSide, this.bSide) == 0 && Double.compare(triangle.bSide, this.cSide) == 0 && Double.compare(triangle.cSide, this.aSide) == 0
+                || Double.compare(triangle.aSide, this.aSide) == 0 && Double.compare(triangle.bSide, this.cSide) == 0 && Double.compare(triangle.cSide, this.bSide) == 0;
+    }
 
+    @Override
+    public int hashCode() {
+        return 1;
+    }
 
 
 

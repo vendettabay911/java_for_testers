@@ -16,4 +16,11 @@ public class TriangleTest {
     void canCalculateArea() {
         Assertions.assertEquals(16, new Triangle(7, 8,9).area());
     }
+
+    @Test
+    void triangleTest() {
+        var t1 = new Triangle(3, 4, 5);
+        var t2 = new Triangle(5, 4, 3);
+        Assertions.assertEquals(t1, t2);
+    }
 }
