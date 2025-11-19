@@ -13,17 +13,21 @@ import java.util.List;
 
 public class ContactCreationTests extends TestBase{
 
+
     public static List<ContactData> contactProvider() {
         var result = new ArrayList<ContactData>(List.of());
-        for (var first_name : List.of("","first name")) {
+        for (var first_name : List.of("", "first name")) {
             for (var last_name : List.of("", "last name")) {
                 for (var phone : List.of("", "phone")) {
-                    result.add(new ContactData(first_name, last_name, phone));
+                    result.add(new ContactData().withFirstName(first_name).withLastName(last_name).withPhone(phone));
                 }
             }
         }
         for (int i = 0; i < 5; i++) {
-            result.add(new ContactData(randomString(i * 10),randomString(i * 10),randomString(i * 10)));
+            result.add(new ContactData()
+                    .withFirstName(randomString(i * 10))
+                    .withLastName(randomString(i * 10))
+                    .withPhone(randomString(i * 10)));
         }
         return result;
     }
@@ -31,11 +35,21 @@ public class ContactCreationTests extends TestBase{
     @ParameterizedTest
     @MethodSource("contactProvider")
     public void canCreateMultipleContacts(ContactData contact) {
-        int contactCount = app.contact().getCountContact();
+        var oldContacts = app.contact().getList();
         app.contact().createContact(contact);
-        int newContactCount = app.contact().getCountContact();
-        Assertions.assertEquals(contactCount + 1, newContactCount);
+        var newContacts = app.contact().getList();
+        Comparator<ContactData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newContacts.sort(compareById);
+        var expectedList = new ArrayList<>(oldContacts);
+        expectedList.add(contact.withContactId(newContacts.get(newContacts.size()-1).id()));
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newContacts,expectedList);
     }
+
+
+
 
 
     @Test
