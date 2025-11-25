@@ -44,6 +44,7 @@ public class ContactHelper extends HelperBase {
         type(By.name("firstname"), contact.first_name());
         type(By.name("lastname"), contact.last_name());
         type(By.name("mobile"), contact.phone());
+        attach(By.name("photo"), contact.photo());
     }
 
     private void openHomePage() {

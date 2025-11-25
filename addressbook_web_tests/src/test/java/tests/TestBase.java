@@ -1,8 +1,11 @@
 package tests;
 
 import manager.ApplicationManager;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import java.util.Random;
+import java.io.File;
+import java.nio.file.Paths;
 
 public class TestBase {
 
@@ -23,6 +26,13 @@ public class TestBase {
             result = result + (char) ('a' + rnd.nextInt(26));
         }
         return result;
+    }
+
+    public static String randomFile(String dir) {
+        var fileNames = new File(dir).list();
+        var rnd = new Random();
+        var index = rnd.nextInt(fileNames.length);
+        return Paths.get(dir, fileNames[index]).toString();
     }
 
 }
