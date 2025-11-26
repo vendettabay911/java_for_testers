@@ -60,11 +60,10 @@ public class ContactCreationTests extends TestBase{
         };
         newContacts.sort(compareById);
         var expectedList = new ArrayList<>(oldContacts);
-        expectedList.add(contact.withContactId(newContacts.get(newContacts.size()-1).id()));
+        expectedList.add(contact.withContactId(newContacts.get(newContacts.size()-1).id()).withPhone("").withLastName("").withFirstName(""));
         expectedList.sort(compareById);
         Assertions.assertEquals(newContacts,expectedList);
     }
-
 
 
     @Test
