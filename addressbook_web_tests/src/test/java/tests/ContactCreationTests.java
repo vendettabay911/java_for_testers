@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static common.CommonFunctions.randomString;
+
 
 public class ContactCreationTests extends TestBase{
 
@@ -68,8 +70,8 @@ public class ContactCreationTests extends TestBase{
     @Test
     void canCreateContact() {
         var contact = new ContactData()
-                .withFirstName("ТЕСТ АВАТАР")
-                .withLastName(CommonFunctions.randomString(10))
+                .withFirstName(randomString(10))
+                .withLastName(randomString(10))
                 .withPhoto(randomFile("src/test/resources/images"));
         app.contact().createContact(contact);
     }

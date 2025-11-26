@@ -1,10 +1,12 @@
 package manager;
 
+import model.ContactData;
 import org.openqa.selenium.By;
 
 import java.nio.file.Paths;
 
 public class HelperBase {
+
     protected final ApplicationManager manager;
 
     public HelperBase(ApplicationManager manager) {
@@ -22,6 +24,10 @@ public class HelperBase {
     }
 
     protected void attach(By locator, String file) {
-        manager.driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString());
+        if (file == null || file.isEmpty()) {
+            System.out.println("файл не найден");
+        } else {
+            manager.driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString());
+        }
     }
 }

@@ -2,19 +2,27 @@ package manager;
 
 import model.ContactData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactHelper extends HelperBase {
+public class ContactHelper extends HelperBase{
     public ContactHelper(ApplicationManager manager) {
         super(manager);
     }
 
     public void createContact(ContactData contact) {
         openContactPage();
-        fillContactForm(contact);
+        initContactCreation();
         submitContactCreation();
         returnToHomePage();
+    }
+
+    private void initContactCreation() {
+        WebDriverWait wait = new WebDriverWait(manager.driver, Duration.ofSeconds(10));
+        click(By.linkText("add new"));
     }
 
     public void modifyContact(ContactData contact, ContactData modifiedContact) {
@@ -25,12 +33,13 @@ public class ContactHelper extends HelperBase {
         returnToHomePage();
     }
 
-    private void selectContactEdit(ContactData contact) {
-        click(By.cssSelector(String.format("a[href^='edit.php?id=%s']", contact.id())));
-    }
-
     public void submitContactEdit() {
         click(By.name("update"));
+    }
+
+    private void selectContactEdit(ContactData contact) {
+        click(By.cssSelector(String.format("a[href^='edit.php?id=%s']", contact.id())));
+        //click(By.cssSelector(String.format("input[value='%s']",contact.id())));
     }
 
     public void removeContact(ContactData contact) {
@@ -41,6 +50,7 @@ public class ContactHelper extends HelperBase {
     }
 
     private void fillContactForm(ContactData contact) {
+        WebDriverWait wait = new WebDriverWait(manager.driver, Duration.ofSeconds(10));
         type(By.name("firstname"), contact.first_name());
         type(By.name("lastname"), contact.last_name());
         type(By.name("mobile"), contact.phone());
@@ -90,6 +100,7 @@ public class ContactHelper extends HelperBase {
         var contacts = new ArrayList<ContactData>();
         var tds = manager.driver.findElements(By.name("entry"));
         for (var td : tds) {
+            //var name = td.getText();
             var tdFirstName = td.findElement(By.cssSelector("td:nth-child(3)")).getText();
             var tdLastName = td.findElement(By.cssSelector("td:nth-child(2)")).getText();
             var tdPhone = td.findElement(By.cssSelector("td:nth-child(6)")).getText();

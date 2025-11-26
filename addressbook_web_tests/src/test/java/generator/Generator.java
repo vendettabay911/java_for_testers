@@ -88,7 +88,7 @@ public class Generator {
             try (var writer = new FileWriter(output)) {
                 writer.write(json);
             }
-        }else {
+        } else {
             throw new IllegalArgumentException("Неизвестный формат данных " + format);
         }
     }
