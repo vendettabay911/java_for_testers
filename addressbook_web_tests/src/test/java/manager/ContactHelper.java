@@ -1,10 +1,10 @@
 package manager;
 
 import model.ContactData;
+import model.GroupData;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Select;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +15,39 @@ public class ContactHelper extends HelperBase{
 
     public void createContact(ContactData contact) {
         openContactPage();
-        initContactCreation();
+        fillContactForm(contact);
         submitContactCreation();
         returnToHomePage();
     }
 
-    private void initContactCreation() {
-        WebDriverWait wait = new WebDriverWait(manager.driver, Duration.ofSeconds(10));
-        click(By.linkText("add new"));
+    public void createContact(ContactData contact, GroupData group) {
+        openContactPage();
+        fillContactForm(contact);
+        selectGroup(group);
+        submitContactCreation();
+        returnToHomePage();
     }
+
+    private void selectGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
+    }
+
+    private void selectGroupWithContacts(GroupData group) {
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue(group.id());
+    }
+
+    public void removeContactFromGroup(ContactData contact, GroupData group) {
+        openHomePage();
+        selectGroupWithContacts(group);
+        removeSelectedContactFromGroup(contact);
+        openHomePage();
+    }
+
+    private void removeSelectedContactFromGroup(ContactData contact) {
+        click(By.cssSelector(String.format("input[value='%s']", contact.id())));
+        click(By.name("remove"));
+    }
+
 
     public void modifyContact(ContactData contact, ContactData modifiedContact) {
         openHomePage();
@@ -49,8 +73,9 @@ public class ContactHelper extends HelperBase{
         returnToHomePage();
     }
 
+
+
     private void fillContactForm(ContactData contact) {
-        WebDriverWait wait = new WebDriverWait(manager.driver, Duration.ofSeconds(10));
         type(By.name("firstname"), contact.first_name());
         type(By.name("lastname"), contact.last_name());
         type(By.name("mobile"), contact.phone());

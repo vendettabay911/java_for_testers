@@ -5,6 +5,8 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.seleniumhq.selenium/selenium-remote-driver/4.38.0/145297b34c461498f5796ddd6ffe0a58be3d50b9/selenium-remote-driver-4.38.0.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.seleniumhq.selenium/selenium-remote-driver/4.38.0/3bc30c2a42b9fa28f7143bb6697a3d9c4d00984a/selenium-remote-driver-4.38.0-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

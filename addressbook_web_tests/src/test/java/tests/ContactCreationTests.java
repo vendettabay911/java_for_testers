@@ -52,15 +52,15 @@ public class ContactCreationTests extends TestBase{
     @ParameterizedTest
     @MethodSource("contactProvider")
     public void canCreateMultipleContacts(ContactData contact) {
-        var oldContacts = app.contact().getList();
+        var oldContacts = app.hbm().getContactList();
         app.contact().createContact(contact);
-        var newContacts = app.contact().getList();
+        var newContacts = app.hbm().getContactList();
         Comparator<ContactData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
         newContacts.sort(compareById);
         var expectedList = new ArrayList<>(oldContacts);
-        expectedList.add(contact.withContactId(newContacts.get(newContacts.size()-1).id()).withPhone("").withLastName("").withFirstName(""));
+        expectedList.add(contact.withContactId(newContacts.get(newContacts.size()-1).id()));
         expectedList.sort(compareById);
         Assertions.assertEquals(newContacts,expectedList);
     }
@@ -73,5 +73,22 @@ public class ContactCreationTests extends TestBase{
                 .withLastName(randomString(10))
                 .withPhoto(randomFile("src/test/resources/images"));
         app.contact().createContact(contact);
+    }
+
+    @Test
+    void canCreateContactInGroup() {
+        var contact = new ContactData()
+                .withFirstName(randomString(10))
+                .withLastName(randomString(10))
+                .withPhoto(randomFile("src/test/resources/images"));
+        if (app.hbm().getGroupCount() == 0) {
+            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+        }
+        var group = app.hbm().getGroupList().get(0);
+
+        var oldRelated = app.hbm().getContactsInGroup(group);
+        app.contact().createContact(contact, group);
+        var newRelated = app.hbm().getContactsInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
     }
 }
