@@ -9,7 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
-
+import manager.hbm.ContactRecord;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -60,9 +60,9 @@ public class ContactCreationTests extends TestBase{
         };
         newContacts.sort(compareById);
         var expectedList = new ArrayList<>(oldContacts);
-        expectedList.add(contact.withContactId(newContacts.get(newContacts.size()-1).id()));
+        expectedList.add(contact.withContactId(newContacts.get(newContacts.size() - 1).id()));
         expectedList.sort(compareById);
-        Assertions.assertEquals(newContacts,expectedList);
+        Assertions.assertEquals(newContacts, expectedList);
     }
 
 
@@ -88,6 +88,23 @@ public class ContactCreationTests extends TestBase{
 
         var oldRelated = app.hbm().getContactsInGroup(group);
         app.contact().createContact(contact, group);
+        var newRelated = app.hbm().getContactsInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
+    }
+
+    @Test
+    void canCreateContactGroup() {
+        var contact = new ContactData()
+                .withFirstName(randomString(10))
+                .withLastName(CommonFunctions.randomString(10))
+                .withPhoto(randomFile("src/test/resources/images"));
+        if (app.hbm().getGroupCount() == 0) {
+            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+        }
+        var group = app.hbm().getGroupList().get(0);
+
+        var oldRelated = app.hbm().getContactsInGroup(group);
+        app.contact().createContactWithAGroup(contact, group);
         var newRelated = app.hbm().getContactsInGroup(group);
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
     }

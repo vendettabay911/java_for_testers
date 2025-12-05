@@ -28,9 +28,27 @@ public class ContactHelper extends HelperBase{
         returnToHomePage();
     }
 
+    public void createContactWithAGroup(ContactData contact, GroupData group) {
+        openContactPage();
+        var oldContacts = manager.hbm().getContactList();
+        fillContactForm(contact);
+        submitContactCreation();
+        returnToHomePage();
+        var newContacts = manager.hbm().getContactList();
+        newContacts.removeAll(oldContacts);
+        selectContact(newContacts.get(0));
+        canCreateContactGroup(group);
+    }
+
     private void selectGroup(GroupData group) {
         new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
     }
+
+    private void canCreateContactGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("to_group"))).selectByValue(group.id());
+        click(By.name("add"));
+    }
+
 
     private void selectGroupWithContacts(GroupData group) {
         new Select(manager.driver.findElement(By.name("group"))).selectByValue(group.id());
